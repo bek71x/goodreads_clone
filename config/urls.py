@@ -10,5 +10,6 @@ urlpatterns = [
     path('', landing_page, name = 'landing_page'),
     path('users/',include('users.urls')),
     path('admin/', admin.site.urls),
+    path('books/', include('book.urls')),
 ]
 

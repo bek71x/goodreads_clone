@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Landing page {% endblock %}</title>
+</head>
+<body>
+
+<p>
+    <a href="{% url 'landing_page' %}">Home</a>/
+    <a href="{% url 'user:register' %}">Register</a> / <a href="{% url 'user:login' %}">Login</a> / <a href="{% url 'book:book_list' %}">Books</a> /
+    <a href="{% url 'user:profile' %}">Profile</a>
+</p>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

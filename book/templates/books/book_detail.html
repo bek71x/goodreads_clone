@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} {{ book.title }} {% endblock %}
+
+{% block content %}
+
+    <h1>{{ book.title }}</h1>
+
+    <p><b>Author(s):</b>
+        {% for book_author in book.bookauthor_set.all %}
+            {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+
+    <p><b>Description:</b> {{ book.description }}</p>
+    <p><b>ISBN:</b> {{ book.isbn }}</p>
+
+{% endblock %}
