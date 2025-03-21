@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Register {% endblock %}
 
 {% block content %}
 
-<h1>Royhatdan otish</h1>
-
-<form method="post", action="{% url 'user:register' %}">
-    {% csrf_token %}
-     {{ form.as_p }}
-    <button type="submit">Royhatdan otish</button>
-</form>
+<h1>Register</h1>
+<div class="row">
+    <div class="col-4">
+        <form method="post", action="{% url 'user:register' %}">
+            {% csrf_token %}
+             {{ form | crispy }}
+            <button type="submit" class="btn btn-success">Royhatdan otish</button>
+        </form>
+    </div>
+</div>
 
 {% endblock %}

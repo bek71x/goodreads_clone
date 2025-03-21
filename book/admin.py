@@ -3,8 +3,8 @@ from .models import Book,Author,BookAuthor,BookReview
 
 
 class BookAdmin(admin.ModelAdmin):
+    list_display = ['title', 'isbn', 'cover']
     list_filter = ['title', 'isbn']
-    list_filter = ['title']
     search_fields = ['title','description']
 
 class AuthorAdmin(admin.ModelAdmin):

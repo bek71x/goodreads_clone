@@ -1,14 +1,12 @@
-from django.contrib.auth.models import User
+from django.conf import settings  # Django sozlamalaridan foydalanish
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
-# Create your models here.
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     isbn = models.CharField(max_length=17)
-
+    cover = models.ImageField(upload_to='book_covers/', blank=True, null=True)
     def __str__(self):
         return self.title
 
@@ -31,10 +29,10 @@ class BookAuthor(models.Model):
 
 
 class BookReview(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # O'zgartirilgan joy
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     comment = models.TextField()
-    stars_given = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
+    stars_given = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     def __str__(self):
         return f'{self.stars_given}⭐ for {self.book} by {self.user}'

@@ -1,18 +1,45 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} {{ book.title }} {% endblock %}
 
 {% block content %}
+<div class="row mb-4">
+    <div class="col-2 ms-3">
+        <img src="{{ book.cover.url }}"  class="cover-picture">
+    </div>
+    <div class="col-6 mb-2">
+        <h1>{{ book.title }}</h1>
 
-    <h1>{{ book.title }}</h1>
+        <span class="fst-italic">Author(s):
+            {% for book_author in book.bookauthor_set.all %}
+                {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </span>
 
-    <p><b>Author(s):</b>
-        {% for book_author in book.bookauthor_set.all %}
-            {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
+        <p><b>Description:</b> {{ book.description }}</p>
+        <p><b>ISBN:</b> {{ book.isbn }}</p>
+</div>
+    <form action="{% url 'book:book_detail' book.id %}" method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="btn btn-primary">Add Review</button>
+    </form>
+    {% if reviews %}
+        <h3>Reviews</h3>
+        <hr>
+        {% for review in reviews %}
+            <div class="row">
+                <div class="col-1">
+                    <img style="width:100px ; height:100px ; border-radius:50%" src="{{ review.user.profile_picture.url }}" alt="">
+                </div>
+            </div>
+               <div class="col-7">
+                   {{ review.stars_given }}⭐ stars by <b> {{ review.user.username }}</b>
+                   <p><i>{{ review.comment }}</i></p>
+               </div>
+                {{ review.user.username }}
         {% endfor %}
-    </p>
-
-    <p><b>Description:</b> {{ book.description }}</p>
-    <p><b>ISBN:</b> {{ book.isbn }}</p>
+    {% endif %}
+    <hr>
 
 {% endblock %}
