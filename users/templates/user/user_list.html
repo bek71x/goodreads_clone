@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 style="text-align: center;">Find Users</h2>
+
+    <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+        <form method="get" action="{% url 'user:user_list' %}" style="width: 50%; display: flex;">
+            <input type="text" name="q" placeholder="Find by name or email..." value="{{ query }}"
+                style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+            <button type="submit"
+                style="padding: 8px 15px; margin-left: 5px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer;">
+                Search
+            </button>
+        </form>
+    </div>
+
+    {% if query %}
+        {% if users %}
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+                {% for user in users %}
+                    <div style="width: 300px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; text-align: center;">
+                        <h3><a href="{% url 'user:user_detail' user.id %}" style="text-decoration: none; color: #007bff;">{{ user.username }}</a></h3>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-size: 18px; color: gray;">No users found.</p>
+        {% endif %}
+    {% else %}
+        <p style="text-align: center; font-size: 18px; color: gray;">Start searching for users above.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ user.username }}'s Profile {% endblock %}
+
+{% block content %}
+<h1>User Profile</h1>
+<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+    <div class="card p-4">
+        <div class="image d-flex flex-column justify-content-center align-items-center">
+            <button class="btn btn-secondary">
+                <img src="{{ user.profile_picture.url }}" height="100" width="100" />
+            </button>
+
+            <span class="name mt-3">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="idd">@{{ user.username }}</span>
+
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+                <span class="idd1">{{ user.email }}</span>
+            </div>
+            <br>
+            <div class="d-flex flex-row justify-content-center align-items-center gap-2">
+                <span class="idd1"><b>USER BIO :</b> {{ user.bio }}</span>
+            </div>
+
+            <div class="px-2 rounded mt-4 date">
+                <span class="join">Joined: {{ user.date_joined|date:"d-M Y " }}</span>
+            </div>
+
+            <div class="d-flex mt-3">
+                <span class="followers">Followers: {{ user.followers.count }}</span> |
+                <span class="following">Following: {{ user.following.count }}</span>
+            </div>
+
+            {% if request.user != user %}
+                <div class="d-flex mt-3">
+                    {% if is_following %}
+                        <form action="{% url 'user:unfollow' user.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Unfollow</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'user:follow' user.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Follow</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

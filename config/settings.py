@@ -25,8 +25,12 @@ SECRET_KEY = 'django-insecure-(g=bx2--ii$f_cw)u(bzwpyxpad7aq7%97nmmma3)hp7wu%+__
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3,
+}
 
 # Application definition
 
@@ -39,8 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book',
     'users',
-    "crispy_forms",
-    "crispy_bootstrap5",
+    'api',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -85,12 +91,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'data',
-        'USER':'postgres',
-        'PASSWORD':'0109',
-        'HOST':'localhost',
-        'PORT':'5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

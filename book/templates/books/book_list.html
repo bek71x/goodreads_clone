@@ -3,26 +3,45 @@
 {% block title %}Book List{% endblock %}
 
 {% block content %}
-    <h1>Book List</h1>
-    <div class="container">
-        {% for book in books %}
-        <div class="row mb-2">
-            <div class="col-2">
-                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="cover-picture">
-            </div>
-            <div class="col-md-10">
-                <h4><a href="{% url 'book:book_detail' book.id %}">{{ book.title }}</a></h4>
-                <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-                <p>{{ book.description | truncatewords:100 }}</p>
-                <p><b>Author(s):</b>
-                    {% for book_author in book.bookauthor_set.all %}
-                        {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-            </div>
-        </div>
-        {% empty %}
-            <p>No books available.</p>
-        {% endfor %}
+    <div class="container py-4">
+        <h1 class="mb-4">Book List</h1>
+        {% if page_obj %}
+            {% for book in page_obj %}
+                <div class="row mb-4 p-3 border rounded shadow-sm align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img src="{{ book.cover.url }}" alt="{{ book.title }}" href="{% url 'book:book_detail' book.id %}" class="cover-picture" style="max-height: 200px; width: auto;">
+                    </div>
+                    <div class="col-md-9">
+                        <h4><a href="{% url 'book:book_detail' book.id %}" class="text-decoration-none text-dark">{{ book.title }}</a></h4>
+                        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+                        <p>{{ book.description | truncatewords:100 }}</p>
+                        <p><b>Author(s):</b>
+                            {% for book_author in book.bookauthor_set.all %}
+                                {{ book_author.author.first_name }} {{ book_author.author.last_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+            <nav>
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a href="#" class="page-link">{{ page_obj.number }}</a>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <p class="text-muted">No books available.</p>
+        {% endif %}
     </div>
 {% endblock %}

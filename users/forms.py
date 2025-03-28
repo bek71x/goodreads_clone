@@ -11,9 +11,9 @@ class RegisterForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username','email','first_name', 'last_name', 'gender','profile_picture' ]
+        fields = ['username','email','first_name', 'last_name', 'gender','profile_picture', 'bio' ]
 
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username','email','first_name', 'last_name', 'gender','profile_picture' ]
+        fields = ['username','email','first_name', 'last_name', 'gender','profile_picture','bio' ]

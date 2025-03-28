@@ -1,6 +1,8 @@
 from django.conf import settings  # Django sozlamalaridan foydalanish
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.utils import timezone
+
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -33,6 +35,14 @@ class BookReview(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     comment = models.TextField()
     stars_given = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-
+    created_at = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return f'{self.stars_given}⭐ for {self.book} by {self.user}'
+
+class ReviewLikeDislike(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.ForeignKey(BookReview, on_delete=models.CASCADE, related_name='likes_dislikes')
+    is_like = models.BooleanField()
+
+    class Meta:
+        unique_together = ('user', 'comment')
